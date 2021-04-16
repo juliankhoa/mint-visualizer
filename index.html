@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Mint Visualizer</title>
+  <link href="css/styles.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+  <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <div class="navbar-brand">Mint Visualizer</div>
+    <button id="sidebarToggle" class="btn btn-link btn-sm order-1 order-lg-0 ml-2"><i class="fas fa-bars"></i></button>
+    <!-- Navbar File Upload -->
+    <form class="ml-auto my-2 my-md-0">
+      <div class="input-group">
+        <input id="fileUpload" type="file" class="custom-file-input" accept=".csv" data-toggle="popover" data-placement="bottom" title="Start Here" data-html="true"
+          data-content="Upload the <code>transactions.csv</code> from your <a href='https://mint.intuit.com/transaction.event'>Mint account</a> at the bottom of the page<img class='border w-100 mt-1' src='img/mint_file.png'>">
+        <label class="custom-file-label" for="customFile">Upload File</label>
+      </div>
+    </form>
+
+  </nav>
+  <div id="layoutSidenav">
+    <!-- Side Nav / Category Filters -->
+    <div id="layoutSidenav_nav">
+      <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+          <div id="categoryFilters" class="nav">
+            <a class="nav-link category-filter py-0 mt-2" data-value="Expenses">
+              <h5><span class="badge badge-primary bg-dark">
+                  <i class="fas fa-layer-group fa-fw mr-1"></i>All Categories
+                </span></h5>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div id="layoutSidenav_content">
+      <main>
+        <div class="container-fluid">
+          <!-- Header Bar / Time Frame Filters -->
+          <ul class="navbar-nav pt-2">
+            <form id="headerForm" class="form-inline" style="display: none">
+              <h4><span id="categoryHeader">Income & Expenses</span>
+                <span class="text-muted font-weight-normal">from
+                  <input type="date" id="startDate" class="form-control" data-toggle="tooltip" data-placement="bottom" title="Start date to view transactions after">
+                  to
+                  <input type="date" id="endDate" class="form-control" data-toggle="tooltip" data-placement="bottom" title="End date to view transactions before">
+                </span>
+                <!-- Time Frame Preset Dropdown -->
+                <a id="timeframeDropdown" class="dropdown-toggle text-dark text-decoration-none align-middle mx-auto" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="far fa-calendar-alt"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="timeframeDropdown">
+                  <a id="allTimePreset" class="dropdown-item timeframe-preset active">All Time</a>
+                  <a class="dropdown-item timeframe-preset">This Year</a>
+                  <a class="dropdown-item timeframe-preset">This Month</a>
+                  <a class="dropdown-item timeframe-preset">Last 14 Days</a>
+                  <a class="dropdown-item timeframe-preset">Last 7 Days</a>
+                </div>
+              </h4>
+            </form>
+          </ul>
+          <div class="row">
+            <div class="col-xl-9">
+              <!-- Sankey Chart -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <i class="fas fa-project-diagram mr-1"></i>
+                  Sankey Chart
+                  <form class="form-check-inline float-right" data-toggle="tooltip" data-placement="bottom" title="Display every merchant instead of just the top 10">
+                    <div class="custom-control custom-switch">
+                      <input id="showAllMerchants" type="checkbox" class="custom-control-input">
+                      <label class="custom-control-label" for="showAllMerchants">Show All Merchants</label>
+                    </div>
+                  </form>
+                  <form id="investmentsSwitch" class="form-check-inline float-right" style="display: none" data-toggle="tooltip" data-placement="bottom" title="Include investment income and spending">
+                    <div class="custom-control custom-switch">
+                      <input id="includeInvestments" type="checkbox" class="custom-control-input" checked>
+                      <label class="custom-control-label" for="includeInvestments">Include Investments</label>
+                    </div>
+                  </form>
+                </div>
+                <div class="card-body p-0">
+                  <div id="sankeyChart" width="100%" style="height: 30rem"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3">
+              <!-- Category Breakdown Chart -->
+              <div class="card mb-4">
+                <div class="card-header p-0">
+                  <div class="btn-group btn-group-toggle mx-1" data-toggle="buttons" style="height: 3rem">
+                    <label class="btn btn-outline-dark active mt-1" title="Pie Chart" style="height: 2.5rem">
+                      <input id="showPieChart" type="radio" name="options" autocomplete="off" checked>
+                      <i class="fas fa-chart-pie fa-fw"></i>
+                    </label>
+                    <label class="btn btn-outline-dark mt-1" title="Bar Chart" style="height: 2.5rem">
+                      <input id="showBarChart" type="radio" name="options" autocomplete="off">
+                      <i class="fas fa-poll-h fa-fw"></i>
+                    </label>
+                    <label class="btn btn-outline-dark mt-1" title="Treemap" style="height: 2.5rem">
+                      <input id="showTreeMap" type="radio" name="options" autocomplete="off">
+                      <i class="fas fa-th-large fa-fw"></i>
+                    </label>
+                  </div>
+                  Breakdown
+                </div>
+                <div class="card-body p-0">
+                  <div id="breakdownChart" width="100%" style="height: 30rem"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-5">
+              <!-- Transactions Table -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <i class="fas fa-list mr-1"></i>
+                  Transactions
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table id="dataTable" class="table table-sm table-striped" width="100%" style="height: 32rem" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th class="th-sm">Date</th>
+                          <th class="th-sm">Description</th>
+                          <th class="th-sm">Amount</th>
+                          <th class="th-sm">Category</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tableRows">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-7">
+              <div class="row">
+                <div class="col-12">
+                  <!-- Time Chart -->
+                  <div class="card mb-4">
+                    <div class="card-header">
+                      <i class="fas fa-chart-bar mr-1"></i>
+                      Over Time
+                    </div>
+                    <div class="card-body p-0">
+                      <div id="timeChart" width="100%" style="height: 20rem"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <!-- Trends -->
+                  <div class="card mb-4">
+                    <div class="card-header">
+                      <i class="fas fa-history mr-1"></i>
+                      Merchant Trends
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="row p-2" style="height: 13rem">
+                        <div class="col-6 pr-0">
+                          <ul class="list-group">
+                            <li class="list-group-item px-2 py-1"><b>Largest Total Amount</b></li>
+                            <div id="topSpent" class="top-list"></div>
+                          </ul>
+                        </div>
+                        <div class="col-6">
+                          <ul class="list-group">
+                            <li class="list-group-item px-2 py-1"><b>Most Frequent</b></li>
+                            <div id="topFrequent" class="top-list"></div>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+  <script src="https://cdn.amcharts.com/lib/4/plugins/sliceGrouper.js"></script>
+  <script src="js/categories.js"></script>
+  <script src="js/scripts.js"></script>
+</body>
+
+</html>
