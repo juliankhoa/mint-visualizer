@@ -7,7 +7,7 @@ var incomeCategories = {
   "Paycheck": "fas fa-money-check",
   "Bonus": "fas fa-coins",
   "Reimbursement": "fas fa-hand-holding-usd",
-  "Returned Purchase": "fas fa-exchange-alt",
+  "Returned Purchase": "fas fa-reply",
   "Rental Income": "fas fa-home",
   "Interest Income": "fas fa-percentage",
 }
@@ -15,23 +15,23 @@ var incomeCategories = {
 var investmentCategories = {
   "Deposit": {
     "type": "debit",
-    "icon": "fas fa-sign-in-alt"
+    "icon": "fas fa-right-to-bracket fa-rotate-90"
   },
   "Withdrawal": {
     "type": "credit",
-    "icon": "fas fa-sign-out-alt"
+    "icon": "fas fa-right-from-bracket fa-rotate-270"
   },
   "Buy": {
     "type": "debit",
-    "icon": "fas fa-caret-square-up"
+    "icon": "fas fa-square-plus"
   },
   "Sell": {
     "type": "credit",
-    "icon": "fas fa-caret-square-down"
+    "icon": "fas fa-square-minus"
   },
   "Dividend & Cap Gains": {
     "type": "credit",
-    "icon": "fas fa-percent"
+    "icon": "fas fa-chart-pie"
   },
 }
 
@@ -49,6 +49,9 @@ var expenseCategories = {
       "Fast Food": {
         "icon": "fas fa-hamburger",
       },
+      "Food Delivery": {
+        "icon": "fas fa-bag-shopping",
+      },
       "Coffee Shops": {
         "icon": "fas fa-coffee",
       },
@@ -65,13 +68,13 @@ var expenseCategories = {
         "icon": "fas fa-tshirt",
       },
       "Electronics & Software": {
-        "icon": "fas fa-laptop",
+        "icon": "fas fa-gamepad",
       },
       "Books": {
         "icon": "fas fa-book-open",
       },
       "Hobbies": {
-        "icon": "fas fa-dice-five",
+        "icon": "fas fa-puzzle-piece",
       },
       "Sporting Goods": {
         "icon": "fas fa-basketball-ball",
@@ -79,7 +82,7 @@ var expenseCategories = {
     }
   },
   "Entertainment": {
-    "icon": "fas fa-theater-masks",
+    "icon": "fas fa-dice-six",
     "color": "#652DC1",
     "subcategories": {
       "Movies & DVDs": {
@@ -89,10 +92,10 @@ var expenseCategories = {
         "icon": "fas fa-music",
       },
       "Amusement": {
-        "icon": "fas fa-ticket-alt",
+        "icon": "fas fa-ticket",
       },
       "Arts": {
-        "icon": "fas fa-palette",
+        "icon": "fas fa-masks-theater",
       },
       "Newspapers & Magazines": {
         "icon": "fas fa-newspaper",
@@ -100,14 +103,14 @@ var expenseCategories = {
     }
   },
   "Bills & Utilities": {
-    "icon": "fas fa-bolt",
+    "icon": "fas fa-envelope-open-text",
     "color": "#FFAA1D",
     "subcategories": {
       "Home Phone": {
         "icon": "fas fa-phone",
       },
       "Mobile Phone": {
-        "icon": "fas fa-mobile-alt",
+        "icon": "fas fa-mobile-screen",
       },
       "Internet": {
         "icon": "fas fa-wifi",
@@ -121,11 +124,11 @@ var expenseCategories = {
     }
   },
   "Auto & Transport": {
-    "icon": "fas fa-car-alt",
+    "icon": "fas fa-car",
     "color": "#1560BD",
     "subcategories": {
       "Auto Payment": {
-        "icon": "fas fa-car-alt",
+        "icon": "fas fa-car-on",
       },
       "Auto Insurance": {
         "icon": "fas fa-car-crash",
@@ -134,13 +137,16 @@ var expenseCategories = {
         "icon": "fas fa-gas-pump",
       },
       "Service & Parts": {
-        "icon": "fas fa-tools",
+        "icon": "fas fa-wrench",
       },
       "Parking": {
         "icon": "fas fa-parking",
       },
       "Public Transportation": {
-        "icon": "fas fa-bus",
+        "icon": "fas fa-bus-simple",
+      },
+      "Ride Share": {
+        "icon": "fas fa-taxi",
       },
     }
   },
@@ -155,7 +161,7 @@ var expenseCategories = {
         "icon": "fas fa-couch",
       },
       "Home Supplies": {
-        "icon": "fas fa-toilet-paper",
+        "icon": "fas fa-pump-soap",
       },
       "Home Insurance": {
         "icon": "fas fa-house-damage",
@@ -172,7 +178,7 @@ var expenseCategories = {
     }
   },
   "Health & Fitness": {
-    "icon": "fas fa-heartbeat",
+    "icon": "fas fa-heart-pulse",
     "color": "#FF3399",
     "subcategories": {
       "Doctor": {
@@ -185,10 +191,10 @@ var expenseCategories = {
         "icon": "fas fa-eye",
       },
       "Health Insurance": {
-        "icon": "fas fa-notes-medical",
+        "icon": "fas fa-hand-holding-medical",
       },
       "Pharmacy": {
-        "icon": "fas fa-prescription-bottle",
+        "icon": "fas fa-prescription-bottle-medical",
       },
       "Gym": {
         "icon": "fas fa-dumbbell",
@@ -199,11 +205,11 @@ var expenseCategories = {
     }
   },
   "Personal Care": {
-    "icon": "fas fa-pump-soap",
+    "icon": "fas fa-soap",
     "color": "#8F47B3",
     "subcategories": {
       "Laundry": {
-        "icon": "fas fa-socks",
+        "icon": "fas fa-jug-detergent",
       },
       "Hair": {
         "icon": "fas fa-cut",
@@ -214,7 +220,7 @@ var expenseCategories = {
     }
   },
   "Travel": {
-    "icon": "fas fa-map-marked-alt",
+    "icon": "fas fa-earth-americas",
     "color": "#02A4D3",
     "subcategories": {
       "Rental Car & Taxi": {
@@ -247,7 +253,7 @@ var expenseCategories = {
     }
   },
   "Financial": {
-    "icon": "fas fa-coins",
+    "icon": "fas fa-building-columns",
     "color": "#5E8C31",
     "subcategories": {
       "Life Insurance": {
@@ -259,7 +265,7 @@ var expenseCategories = {
     }
   },
   "Business Services": {
-    "icon": "fas fa-clipboard",
+    "icon": "fas fa-briefcase",
     "color": "#A63A79",
     "subcategories": {
       "Office Supplies": {
@@ -280,7 +286,7 @@ var expenseCategories = {
     }
   },
   "Kids": {
-    "icon": "fas fa-child",
+    "icon": "fas fa-children",
     "color": "#FE4C40",
     "subcategories": {
       "Allowance": {
@@ -299,7 +305,7 @@ var expenseCategories = {
         "icon": "fas fa-shapes",
       },
       "Child Support": {
-        "icon": "fas fa-hands-helping",
+        "icon": "fas fa-hands-holding-child",
       },
     }
   },
@@ -319,7 +325,7 @@ var expenseCategories = {
     }
   },
   "Gifts & Donations": {
-    "icon": "fas fa-ribbon",
+    "icon": "fas fa-gifts",
     "color": "#C32148",
     "subcategories": {
       "Gift": {
@@ -331,17 +337,17 @@ var expenseCategories = {
     }
   },
   "Fees & Charges": {
-    "icon": "fas fa-calculator",
+    "icon": "fas fa-hand-holding-dollar",
     "color": "#00755E",
     "subcategories": {
       "ATM Fee": {
         "icon": "fas fa-credit-card",
       },
       "Bank Fee": {
-        "icon": "fas fa-landmark",
+        "icon": "fas fa-building-columns",
       },
       "Late Fee": {
-        "icon": "far fa-calendar-times",
+        "icon": "fas fa-clock",
       },
       "Service Fee": {
         "icon": "fas fa-receipt",
@@ -350,12 +356,12 @@ var expenseCategories = {
         "icon": "fas fa-envelope-open-text",
       },
       "Trade Commissions": {
-        "icon": "fas fa-chart-line",
+        "icon": "fas fa-chart-simple",
       },
     }
   },
   "Taxes": {
-    "icon": "fas fa-file-signature",
+    "icon": "fas fa-percent",
     "color": "#2E5894",
     "subcategories": {
       "Sales Tax": {
@@ -365,22 +371,22 @@ var expenseCategories = {
         "icon": "fas fa-sign",
       },
       "Local Tax": {
-        "icon": "fas fa-user",
+        "icon": "fas fa-landmark-flag",
       },
       "State Tax": {
-        "icon": "fas fa-user-friends",
+        "icon": "fas fa-landmark",
       },
       "Federal Tax": {
-        "icon": "fas fa-users",
+        "icon": "fas fa-landmark-dome",
       },
     }
   },
   "Uncategorized": {
-    "icon": "far fa-question-circle",
+    "icon": "fas fa-list-ul",
     "color": "#8D90A1",
     "subcategories": {
       "Cash & ATM": {
-        "icon": "fas fa-money-bill",
+        "icon": "fas fa-money-bills",
       },
       "Check": {
         "icon": "fas fa-money-check",

@@ -81,8 +81,8 @@
 
   // Get all category info to build node tree and create filter nav links
   function buildCategoryTree() {
-    buildCategoryFilter('Income', 'fas fa-wallet', incomeColor, incomeCategories);
-    buildCategoryFilter('Investments', 'fas fa-chart-line', investmentColor, investmentCategories);
+    buildCategoryFilter('Income', 'fas fa-sack-dollar', incomeColor, incomeCategories);
+    buildCategoryFilter('Investments', 'fas fa-chart-simple', investmentColor, investmentCategories);
     $.each(expenseCategories, function(catName, catInfo) {
       buildCategoryFilter(catName, catInfo.icon, catInfo.color, catInfo.subcategories);
     });
@@ -217,7 +217,8 @@
     'Description': -1,
     'Amount': -1,
     'Transaction Type': -1,
-    'Category': -1
+    'Category': -1,
+    'Account Name': -1
   };
   // Get transactions from uploaded file
   function loadTransactions(e) {
@@ -295,7 +296,8 @@
       let date = dateMDY[2] + '/' + month + '/' + dateMDY[1],
         description = row[colNum['Description']],
         amount = Number(row[colNum['Amount']]),
-        category = row[colNum['Category']];
+        category = row[colNum['Category']],
+        account = row[colNum['Account Name']];
 
       // Skip transactions out of timeframe
       let dateUTC = new Date(date.replaceAll('/', '-') + 'Z');
@@ -312,14 +314,13 @@
         let tickerMatch = description.match(/[A-Z]{2,5}(\.[A-Z]{1,2})*/);
         if (tickerMatch) description = tickerMatch[0];
       }
-      // Remove phone/transaction numbers from descriptions
-      description = description.replace(/\d{3}(-\d+)+/, '');
+
       // Shorten descriptions
       if (row[colNum['Transaction Type']] == 'credit') description = description.replace('Deposit', '');
-      description = description.replace(/\s-|-\s/, ' ');
-      if (description.length > 20) {
-        description = description.split(' ').slice(0, 2).join(' ');
-      }
+
+      description = cleanDescription(description, category, account);
+
+      let internalTransfer = description.includes('Transfer to') || category == 'Credit Card Payment'
 
       let amountStr = toDollars(amount);
       let amountColor = 'green';
@@ -365,12 +366,12 @@
           merchantNode = new Node(nodeName, parentNode, parentNode.color);
         }
         // Otherwise add to "Other Income" category node amount
-        else if (category != 'Transfer' && category != 'Credit Card Payment') {
+        else if (!internalTransfer) {
           merchantNode = new Node(nodeName, nodeDict['Other Income'], incomeColor);
         }
-        // If credit was from an expense merchant (refund), subtract amount
+        // If credit was from an expense merchant (refund), ignore
         if (merchantNode && merchantNode.isChildOf(expenseNode))
-          amount = -amount;
+          return;
       }
 
       let rowStyle = '';
@@ -381,7 +382,7 @@
         if (rootNode != expenseNode && !merchantNode.isChildOf(rootNode)) return;
       }
 
-      if (category == 'Transfer' || category == 'Credit Card Payment') {
+      if (internalTransfer) {
         if (rootNode != expenseNode) return;
         rowStyle = 'style="color: grey"';
         amountColor = 'grey';
@@ -415,6 +416,26 @@
     table = $('#dataTable').DataTable({
       dom: '<f<t>p>'
     });
+  }
+
+  function cleanDescription(desc, category, account) {
+    // Remove phone/transaction numbers from descriptions
+    desc = desc.replace(/(#|\*)?[\d-/]+/, '');
+
+    desc = desc.replace(/\s-|-\s/, ' ');
+
+    desc = desc.replace('Payment to ', '')
+               .replace('Refund from ', '')
+               .replace('Reversal of ', '');
+
+    desc = desc.replace('PAYPAL', '');
+    desc = desc.replace(/[a-z .'-]+ Paid/i, '');
+    desc = desc.replace(/[a-z .'-]+ Charged/i, '');
+    if (account == 'Venmo') {
+      desc = "Venmo";
+    }
+    desc = desc.split(/\s+/).slice(0, 3).join(' ');
+    return desc.trim();
   }
 
   $('input[type=checkbox]').click(function() {
